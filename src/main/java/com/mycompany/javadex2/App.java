@@ -5,7 +5,7 @@ import database.Database;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 
@@ -21,10 +21,22 @@ public class App extends Application {
         
         Database bd = new Database();
             bd.inicialize();
-            Pokemon pikachu = bd.buscaPokemon(25);
+            
 
-        var label = new Label("Pokemon " + pikachu.getNome() + " capturado.");
-        var scene = new Scene(new StackPane(label), 640, 480);
+        var pikachu = new Label(bd.buscaPokemon(25).getNome());
+        var raichu = new Label(bd.buscaPokemon(26).getNome());
+        var label2 = new Label("Hellow Word");
+        //StackPane pilha = new StackPane(pikachu);
+        VBox vertical = new VBox();
+        HBox horizontal = new HBox();
+        
+        horizontal.getChildren().add(pikachu);
+        horizontal.getChildren().add(raichu);
+        
+        
+        vertical.getChildren().add(label2);
+        vertical.getChildren().add(horizontal);
+        var scene = new Scene(vertical, 640, 480);
         stage.setScene(scene);
         stage.show();
     }
