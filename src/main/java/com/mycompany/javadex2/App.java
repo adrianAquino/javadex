@@ -18,6 +18,8 @@ import javafx.scene.image.*;
 public class App extends Application {
     //Variaveis Globais
     private Label poke;
+    private Label tipos;
+    private Label evolucao;
     private Pokemon pokemonEscolhido;
     @Override
     public void start(Stage stage) {
@@ -25,8 +27,9 @@ public class App extends Application {
         Database bd = new Database();
         bd.inicialize();
             
-         poke = new Label("Hellow Word");
-        
+        poke = new Label("00 - Tela Inicial");
+        tipos = new Label("Tipos vem aqui");
+        evolucao = new Label("Evolucao vem aqui");
   
         VBox listaDePokemons = new VBox();
         for(int i = 1; i <=151; i++){
@@ -46,10 +49,23 @@ public class App extends Application {
         iv.setPreserveRatio(true);
         
         HBox tela_principal = new HBox();
-        tela_principal.getChildren().add(scroll_lista);
         VBox apresentacao = new VBox();
+        tela_principal.getChildren().add(scroll_lista);
         apresentacao.getChildren().add(poke);
         apresentacao.getChildren().add(iv);
+        
+        HBox informacoes = new HBox();
+        VBox tipos_tela = new VBox();
+        tipos_tela.getChildren().add(tipos);
+        VBox evolucao_tela = new VBox();
+        evolucao_tela.getChildren().add(evolucao);
+        
+        
+        
+        
+        informacoes.getChildren().add(tipos_tela);
+        informacoes.getChildren().add(evolucao_tela);
+        apresentacao.getChildren().add(informacoes);
         tela_principal.getChildren().add(apresentacao);
         var scene = new Scene(tela_principal, 640, 480);
         stage.setScene(scene);
@@ -61,7 +77,9 @@ public class App extends Application {
     }
     
     public void atualizacao(Pokemon p){
-        poke.setText(p.getNome());
+        poke.setText(p.getNumero() + " - " +p.getNome());
+        tipos.setText(p.getTipoFraquezas());
+        evolucao.setText(p.getEvoluiPara() == null ? " " : p.getEvoluiPara().getNome());
     }
 
 }
