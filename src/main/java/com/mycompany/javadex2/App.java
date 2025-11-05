@@ -1,6 +1,7 @@
 package com.mycompany.javadex2;
 
 import classes.Pokemon;
+import classes.Tipo;
 import database.Database;
 import java.util.List;
 import javafx.application.Application;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.image.*;
 
 
 /**
@@ -38,9 +40,17 @@ public class App extends Application {
         ScrollPane scroll_lista = new ScrollPane();
         scroll_lista.setContent(listaDePokemons);
         
+        Image obj = new Image(getClass().getResourceAsStream("/image/151.png"));
+        ImageView iv = new ImageView(obj);
+        iv.setFitWidth(200);
+        iv.setPreserveRatio(true);
+        
         HBox tela_principal = new HBox();
         tela_principal.getChildren().add(scroll_lista);
-        tela_principal.getChildren().add(poke);
+        VBox apresentacao = new VBox();
+        apresentacao.getChildren().add(poke);
+        apresentacao.getChildren().add(iv);
+        tela_principal.getChildren().add(apresentacao);
         var scene = new Scene(tela_principal, 640, 480);
         stage.setScene(scene);
         stage.show();
