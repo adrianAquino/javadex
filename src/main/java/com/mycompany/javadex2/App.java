@@ -1,6 +1,7 @@
 package com.mycompany.javadex2;
 
 import classes.Pokemon;
+import classes.Tipo;
 import database.Database;
 import java.util.List;
 import javafx.application.Application;
@@ -8,48 +9,49 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.image.*;
 
 
 /**
  * JavaFX App
  */
 public class App extends Application {
-    private Label label2;
-    private List<Pokemon> pokemons;
+    //Variaveis Globais
+    private Label poke;
     private Pokemon pokemonEscolhido;
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
-        
+       
         Database bd = new Database();
         bd.inicialize();
-        //pokemons = bd.pokemons;
             
-
-        Button pikachu = new Button(bd.buscaPokemon(25).getNome());
-        pikachu.setOnAction(e-> atualizacao());
-        Label raichu = new Label(bd.buscaPokemon(26).getNome());
-        label2 = new Label("Hellow Word");
+         poke = new Label("Hellow Word");
         
-        StackPane pilha = new StackPane(pikachu);
-        ScrollPane tela = new ScrollPane();
-        /*
-        HBox horizontal = new HBox();
-        horizontal.getChildren().add(pikachu);
-        horizontal.getChildren().add(raichu);
-        horizontal.getChildren().add(label2);
-        */
+  
         VBox listaDePokemons = new VBox();
         for(int i = 1; i <=151; i++){
-            listaDePokemons.getChildren().add(new Label(bd.buscaPokemon(i).getNome()));
+            Pokemon laco_repeticao =bd.buscaPokemon(i);
+            Button botao = new Button(laco_repeticao.getNome());
+            botao.setOnAction(e->atualizacao(laco_repeticao));
+            listaDePokemons.getChildren().add(botao);
         }
         
-        tela.setContent(listaDePokemons);
         
-        //vertical.getChildren().add(label2);
-        //vertical.getChildren().add(horizontal);
-        var scene = new Scene(tela, 640, 480);
+        ScrollPane scroll_lista = new ScrollPane();
+        scroll_lista.setContent(listaDePokemons);
+        
+        Image obj = new Image(getClass().getResourceAsStream("/image/151.png"));
+        ImageView iv = new ImageView(obj);
+        iv.setFitWidth(200);
+        iv.setPreserveRatio(true);
+        
+        HBox tela_principal = new HBox();
+        tela_principal.getChildren().add(scroll_lista);
+        VBox apresentacao = new VBox();
+        apresentacao.getChildren().add(poke);
+        apresentacao.getChildren().add(iv);
+        tela_principal.getChildren().add(apresentacao);
+        var scene = new Scene(tela_principal, 640, 480);
         stage.setScene(scene);
         stage.show();
     }
@@ -58,8 +60,8 @@ public class App extends Application {
         launch();
     }
     
-    public void atualizacao(){
-        System.out.println("Botão");
+    public void atualizacao(Pokemon p){
+        poke.setText(p.getNome());
     }
 
 }
