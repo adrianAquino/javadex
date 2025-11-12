@@ -5,6 +5,7 @@ import classes.Tipo;
 import database.Database;
 import java.util.List;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -21,6 +22,8 @@ public class App extends Application {
     private Label tipos;
     private Label evolucao;
     private Pokemon pokemonEscolhido;
+    private Image obj;
+    private ImageView iv;
     @Override
     public void start(Stage stage) {
        
@@ -32,29 +35,36 @@ public class App extends Application {
         evolucao = new Label("Evolucao vem aqui");
   
         VBox listaDePokemons = new VBox();
+        listaDePokemons.setAlignment(Pos.CENTER);
+        listaDePokemons.setSpacing(3);
         for(int i = 1; i <=151; i++){
             Pokemon laco_repeticao =bd.buscaPokemon(i);
             Button botao = new Button(laco_repeticao.getNome());
             botao.setOnAction(e->atualizacao(laco_repeticao));
+            botao.setMinWidth(120);
             listaDePokemons.getChildren().add(botao);
         }
         
         
         ScrollPane scroll_lista = new ScrollPane();
         scroll_lista.setContent(listaDePokemons);
+        scroll_lista.setMinWidth(200);
         
-        Image obj = new Image(getClass().getResourceAsStream("/image/151.png"));
-        ImageView iv = new ImageView(obj);
-        iv.setFitWidth(200);
+        obj = new Image(getClass().getResourceAsStream("/image/poke_nada.png"));
+        iv = new ImageView(obj);
+        iv.setFitWidth(300);
         iv.setPreserveRatio(true);
         
         HBox tela_principal = new HBox();
-        VBox apresentacao = new VBox();
         tela_principal.getChildren().add(scroll_lista);
+        VBox apresentacao = new VBox();
+        apresentacao.setMinWidth(340);
+        apresentacao.setAlignment(Pos.CENTER);
         apresentacao.getChildren().add(poke);
         apresentacao.getChildren().add(iv);
         
-        HBox informacoes = new HBox();
+        
+        HBox informacoes = new HBox(10);
         VBox tipos_tela = new VBox();
         tipos_tela.getChildren().add(tipos);
         VBox evolucao_tela = new VBox();
@@ -78,8 +88,9 @@ public class App extends Application {
     
     public void atualizacao(Pokemon p){
         poke.setText(p.getNumero() + " - " +p.getNome());
-        tipos.setText(p.getTipoFraquezas());
-        evolucao.setText(p.getEvoluiPara() == null ? " " : p.getEvoluiPara().getNome());
+        iv.setImage(new Image(getClass().getResourceAsStream("/image/" + String.format("%03d",p.getNumero())+ ".png")));
+        tipos.setText("Tipos de Fraquezas: "+p.getTipoFraquezas());
+        evolucao.setText(p.getEvoluiPara() == null ? " " : "Evolui para: " + p.getEvoluiPara().getNome());
     }
 
 }
