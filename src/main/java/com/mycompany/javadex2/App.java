@@ -25,6 +25,8 @@ public class App extends Application {
     private Pokemon pokemonEscolhido;
     private Image obj;
     private ImageView iv;
+    private Button tipo1Btn;
+    private Button tipo2Btn;
     @Override
     public void start(Stage stage) {
        
@@ -34,6 +36,14 @@ public class App extends Application {
         poke = new Label("00 - Tela Inicial");
         tipos = new Label("Tipos vem aqui");
         evolucao = new Label("Evolucao vem aqui");
+        
+        tipo1Btn = new Button();
+        tipo2Btn = new Button();
+        tipo1Btn.setVisible(false); // Inicialmente escondidos
+        tipo2Btn.setVisible(false);
+        tipo1Btn.setMinWidth(100);
+        tipo2Btn.setMinWidth(100);
+
   
         VBox listaDePokemons = new VBox();
         listaDePokemons.setAlignment(Pos.CENTER);
@@ -65,10 +75,11 @@ public class App extends Application {
         apresentacao.getChildren().add(iv);
         
         
-        HBox informacoes = new HBox(10);
-        VBox tipos_tela = new VBox();
-        tipos_tela.getChildren().add(tipos);
+        HBox informacoes = new HBox(60);
+        VBox tipos_tela = new VBox(5);
+       
         tipos_tela.setPadding(new Insets(0, 0, 0, 10));
+        tipos_tela.getChildren().addAll(tipos, tipo1Btn, tipo2Btn);
         VBox evolucao_tela = new VBox();
         evolucao_tela.getChildren().add(evolucao);
         
@@ -79,7 +90,7 @@ public class App extends Application {
         informacoes.getChildren().add(evolucao_tela);
         apresentacao.getChildren().add(informacoes);
         tela_principal.getChildren().add(apresentacao);
-        var scene = new Scene(tela_principal, 720, 480);
+        var scene = new Scene(tela_principal, 640, 480);
         stage.setScene(scene);
         stage.show();
     }
@@ -91,7 +102,33 @@ public class App extends Application {
     public void atualizacao(Pokemon p){
         poke.setText(p.getNumero() + " - " +p.getNome());
         iv.setImage(new Image(getClass().getResourceAsStream("/image/" + String.format("%03d",p.getNumero())+ ".png")));
-        tipos.setText("Tipos de Fraquezas: "+p.getTipoFraquezas());
+       
+       
+        tipos.setVisible(false);
+        tipos.setManaged(false);
+        
+        List<Tipo> tiposPokemon = p.getTipos();
+        
+         tipo1Btn.setVisible(false);
+         tipo2Btn.setVisible(false);
+         
+                if (tiposPokemon != null && !tiposPokemon.isEmpty()) {
+               // Mostra o primeiro tipo
+               tipo1Btn.setText("Tipo 1: " + tiposPokemon.get(0).getNome());
+               tipo1Btn.setVisible(true);
+               tipo1Btn.setMinWidth(120);
+               tipo1Btn.setAlignment(Pos.CENTER);
+
+               // Se tiver dois tipos, mostra o segundo
+               if (tiposPokemon.size() > 1) {
+                   tipo2Btn.setText("Tipo 2: " + tiposPokemon.get(1).getNome());
+                   tipo2Btn.setVisible(true);
+                   tipo2Btn.setMinWidth(120);
+                   tipo2Btn.setAlignment(Pos.CENTER);
+               }
+            }
+        
+       
         evolucao.setText(p.getEvoluiPara() == null ? " " : "Evolui para: " + p.getEvoluiPara().getNome());
     }
 
