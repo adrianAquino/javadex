@@ -5,6 +5,7 @@ import classes.Tipo;
 import database.Database;
 import java.util.List;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -59,7 +60,7 @@ public class App extends Application {
         tela_principal.getChildren().add(scroll_lista);
         VBox apresentacao = new VBox();
         apresentacao.setMinWidth(340);
-        apresentacao.setAlignment(Pos.CENTER);
+        apresentacao.setAlignment(Pos.TOP_CENTER);
         apresentacao.getChildren().add(poke);
         apresentacao.getChildren().add(iv);
         
@@ -67,6 +68,7 @@ public class App extends Application {
         HBox informacoes = new HBox(10);
         VBox tipos_tela = new VBox();
         tipos_tela.getChildren().add(tipos);
+        tipos_tela.setPadding(new Insets(0, 0, 0, 10));
         VBox evolucao_tela = new VBox();
         evolucao_tela.getChildren().add(evolucao);
         
@@ -77,7 +79,7 @@ public class App extends Application {
         informacoes.getChildren().add(evolucao_tela);
         apresentacao.getChildren().add(informacoes);
         tela_principal.getChildren().add(apresentacao);
-        var scene = new Scene(tela_principal, 640, 480);
+        var scene = new Scene(tela_principal, 720, 480);
         stage.setScene(scene);
         stage.show();
     }
